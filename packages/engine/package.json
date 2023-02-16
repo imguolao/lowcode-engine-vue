@@ -1,0 +1,25 @@
+{
+  "name": "vue-lowcode-engine",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "vue-demi": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5",
+    "vue": "^3.2.47"
+  },
+  "peerDependencies": {
+    "@vue/composition-api": "*",
+    "vue": "^2.6.14 || ^3.2.47"
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
+  }
+}

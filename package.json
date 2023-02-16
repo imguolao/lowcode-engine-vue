@@ -1,0 +1,16 @@
+{
+  "name": "lowcode-engine-vue",
+  "private": true,
+  "scripts": {
+    "start:vue2": "lerna run start --scope vue2-site",
+    "start:vue3": "lerna run start --scope vue3-site",
+    "start:docs": "lerna run start --scope docs"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "lerna": "^6.4.1",
+    "typescript": "^4.9.5"
+  }
+}
