@@ -13,3 +13,4 @@ export function useLowcodeEngine() {
 
 export * from './plugin'
 export * from './engine'
+export * from './schema'

@@ -36,8 +36,6 @@ export class Plugins {
     return true
   }
 
-  // unregister(): boolean {}
-
   callHook(hookName: LowCodeHookNames, initResult: any, ...args: any[]) {
     if (this.#hooksMap.has(hookName)) {
       return this.#hooksMap.get(hookName)!.reduce((res, func) => {
@@ -49,13 +47,13 @@ export class Plugins {
   #normalizePluginID(id: string | undefined, pluginObj: LowCodePluginObject) {
     if (id) {
       if (this.#pluginsMap.has(id)) {
-        warn('engine', `Duplicate registration of the plugin with id ${id}.`, pluginObj)
+        warn('engine', `Duplicate registration of the plugin with id ${id}.`, pluginObj, this)
       }
 
       return id
     }
 
-    warn('engine', `plugin id is missing.`, pluginObj)
+    warn('engine', `plugin id is missing.`, pluginObj, this)
     return `plugin-${this.#innerPluginIDCount++}`
   }
 

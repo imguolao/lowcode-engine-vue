@@ -6,7 +6,7 @@ export interface PropSchema {
   [key: string]: any
 }
 
-export interface NodeSchema {
+export interface ObjectNodeSchema {
   component: string
 
   // attr
@@ -15,7 +15,7 @@ export interface NodeSchema {
 
   // props
   props?: PropSchema
-  children?: NodeSchema[] | string
+  children?: NodeSchema[]
 
   // slots
   slotName?: string
@@ -24,9 +24,12 @@ export interface NodeSchema {
   [key: string]: any
 }
 
+export type TextNodeSchema = string
+export type NodeSchema = ObjectNodeSchema | TextNodeSchema
+
 export interface PageSchema {
-  name: string
-  componentTree?: NodeSchema
+  name?: string
+  componentTree: NodeSchema
 
   [key: string]: any
 }
