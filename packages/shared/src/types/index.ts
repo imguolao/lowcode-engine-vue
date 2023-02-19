@@ -1,7 +1,2 @@
-export enum LowCodeHooks {
-  'init' = 'init',
-}
+export type RequiredPick<T, K extends keyof T> = Required<Pick<T, K>>
 
-export type LowCodeHookNames = `${LowCodeHooks}`
-
-export * from './utils'

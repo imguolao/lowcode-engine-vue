@@ -1,6 +1,6 @@
 import { warn } from 'vue-lowcode-shared'
 import { Plugins } from './plugin'
-import type { LowCodePluginObject } from './plugin'
+import type { LowCodePluginObject, LowCodeHookNames } from './plugin'
 
 export interface LowCodeEngineOptions {
   plugins?: LowCodePluginObject[]
@@ -29,11 +29,15 @@ export class Engine {
     return this.#attrs[key]
   }
 
+  callHook(hookName: LowCodeHookNames, initResult: any, ...args: any[]): any {
+    return this.pluginManager.callHook(hookName, this, initResult, ...args)
+  }
+
   #init(options: LowCodeEngineOptions) {
     const { plugins = [] } = options
     plugins.forEach(p => this.pluginManager.register(p))
 
     // call `init` hook
-    this.pluginManager.callHook('init', undefined, this)
+    this.callHook('init', undefined)
   }
 }

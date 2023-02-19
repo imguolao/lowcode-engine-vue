@@ -1,7 +1,36 @@
-import type { LowCodeHookNames } from 'vue-lowcode-shared'
-import { LowCodeHooks, warn } from 'vue-lowcode-shared'
+import { h } from 'vue-demi'
+import { warn } from 'vue-lowcode-shared'
+import { type Engine } from './engine'
+import { type NodeSchema, type ObjectNodeSchema, type PropSchema } from './schema'
+
+export type VueComponent = Parameters<typeof h>[0] | string
+export type VueVNode = ReturnType<typeof h>
+
+export enum LowCodeHooks {
+  'init' = 'init',
+  'resolveSchema' = 'resolveSchema',
+  'resolveTextVNode' = 'resolveTextVNode',
+  'resolveComponent' = 'resolveComponent',
+  'resolveProps' = 'resolveProps',
+  'resolveChildren' = 'resolveChildren',
+}
+
+export type LowCodeHooksType = {
+  [LowCodeHooks.init]: (engine: Engine) => void
+  [LowCodeHooks.resolveSchema]: (engine: Engine, schema: NodeSchema, prevResult: NodeSchema) => NodeSchema
+  [LowCodeHooks.resolveTextVNode]: (engine: Engine, text: string, prevResult: string) => VueVNode
+  [LowCodeHooks.resolveComponent]: (engine: Engine, component: string, schema: ObjectNodeSchema, prevResult: VueComponent) => VueComponent
+  [LowCodeHooks.resolveProps]: (engine: Engine, props: PropSchema, schema: ObjectNodeSchema, prevResult: Record<string, any>) => VueComponent
+  [LowCodeHooks.resolveChildren]: (
+    engine: Engine, 
+    children: ObjectNodeSchema['children'], 
+    schema: ObjectNodeSchema, 
+    prevResult: ObjectNodeSchema['children'],
+  ) => VueComponent
+}
 
 export type LowCodePluginID = string;
+export type LowCodeHookNames = `${LowCodeHooks}`
 export type LowCodePluginObject = Record<LowCodeHookNames, Function> & { id: string } & Record<string, any>
 
 export class Plugins {
@@ -36,10 +65,10 @@ export class Plugins {
     return true
   }
 
-  callHook(hookName: LowCodeHookNames, initResult: any, ...args: any[]) {
+  callHook(hookName: LowCodeHookNames, engine: Engine, initResult: any, ...args: any[]) {
     if (this.#hooksMap.has(hookName)) {
       return this.#hooksMap.get(hookName)!.reduce((res, func) => {
-        return func.call(null, ...args, res)
+        return func.call(null, engine, ...args, res)
       }, initResult)
     }
   }
@@ -58,6 +87,6 @@ export class Plugins {
   }
 
   #isHookName(name: string): name is LowCodeHookNames {
-    return Object.keys(LowCodeHooks).findIndex(v => v === name) !== -1
+    return !!~Object.keys(LowCodeHooks).findIndex(v => v === name)
   }
 }

@@ -1,6 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "vue-lowcode-engine": ["../engine/src"],
+      "vue-lowcode-shared": ["../shared/src"]
+    }
+  },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "../../types/*.ts"
   ]
 }
